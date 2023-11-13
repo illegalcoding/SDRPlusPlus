@@ -674,6 +674,10 @@ void MainWindow::setPlayState(bool _playing) {
     if (_playing) {
         sigpath::iqFrontEnd.flushInputBuffer();
         sigpath::sourceManager.start();
+        std::vector<std::string> streams = sigpath::sinkManager.getStreamNames();
+        for (std::string stream: streams) {
+            sigpath::sinkManager.startStream(stream);
+        }
         sigpath::sourceManager.tune(gui::waterfall.getCenterFrequency());
         playing = true;
         onPlayStateChange.emit(true);
@@ -681,6 +685,10 @@ void MainWindow::setPlayState(bool _playing) {
     else {
         playing = false;
         onPlayStateChange.emit(false);
+        std::vector<std::string> streams = sigpath::sinkManager.getStreamNames();
+        for (std::string stream: streams) {
+            sigpath::sinkManager.stopStream(stream);
+        }
         sigpath::sourceManager.stop();
         sigpath::iqFrontEnd.flushInputBuffer();
     }

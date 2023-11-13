@@ -102,9 +102,6 @@ public:
         // Start AF chain
         afChain.start();
 
-        // Start stream, the rest was started when selecting the demodulator
-        stream.start();
-
         // Register the menu
         gui::menu.registerEntry(name, menuHandler, this, this);
 
